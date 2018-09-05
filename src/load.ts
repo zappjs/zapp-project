@@ -1,39 +1,19 @@
 import * as _ from 'lodash'
-import * as glob from 'glob';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
 import { homedir } from 'os';
 
+import getItems from './getItems';
+import loadImports from './loadImports';
 import merge from './merge';
-
-function getItems(dir): Promise<[string]> {
-  return new Promise((resolve, reject) => {
-    glob(
-      '**/*',
-      {
-        cwd: dir,
-        dot: true,
-        nodir: true
-      },
-      (err, items) => {
-        if (err) {
-          reject('Unable to load project files.');
-          return;
-        }
-
-        resolve(items);
-      }
-    );
-  });
-}
 
 export default async function load({ dir, isGenerator = false }) {
   const localDir = dir.substr(0, 1) === '~' ? `${homedir()}/${dir.substr(1)}` : dir;
   const zappDir = `${localDir}/.zapp`;
   const cwd = path.normalize(zappDir);
 
-  console.log(cwd);
+  // console.log(cwd);
 
   let project = {};
 
@@ -59,46 +39,11 @@ export default async function load({ dir, isGenerator = false }) {
     return project;
   }
 
-  const generatorPaths = [];
-
-  Object.keys(project.imports).forEach((domain) => {
-    const users = project.imports[domain];
-    Object.keys(users).forEach((username) => {
-      const repos = users[username];
-      Object.keys(repos).forEach((repoName) => {
-        const repo = repos[repoName];
-        const repoPath = repo.path || `${homedir()}/.zapp/generators/${domain}/${username}/${repoName}/${repo.version}`;
-
-        generatorPaths.push(repoPath);
-      });
-    });
-  });
-
-  console.log('Generator Paths:');
-  console.log(generatorPaths);
-
-  // const generators = [];
-  // for (let i = 0; i < generatorPaths.length; i++) {
-  //   const generator = await load({ dir: generatorPaths[i], isGenerator: true });
-  //   console.log('generator:');
-  //   console.log(generator);
-  //   generators.push(generator);
-  // }
-
-  const generators = await Promise.all(
-    generatorPaths.map((generatorPath) => {
-      return load({ dir: generatorPath, isGenerator: true });
-    })
-  );
-
-  // console.log('Generators:');
-  // console.log(JSON.stringify(generators[0], null, 2));
+  const imports = await loadImports({ imports: project.imports });
 
   let zappData = {};
-  generators.forEach((generator) => {
-    console.log('adds generator:');
-    console.log(generator.exports);
-    zappData = merge(zappData, generator.exports);
+  imports.forEach((generator) => {
+    zappData = merge(zappData, generator);
   });
   zappData = merge(zappData, project);
 

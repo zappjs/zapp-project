@@ -1,5 +1,7 @@
 import load from './load';
+import loadImports from './loadImports';
 
 export {
-  load
+  load,
+  loadImports
 }
