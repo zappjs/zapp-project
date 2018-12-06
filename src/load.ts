@@ -15,7 +15,7 @@ export default async function load({ dir, isGenerator = false }) {
 
   // console.log(cwd);
 
-  let project = {};
+  let project: any = {};
 
   const items = await getItems(cwd);
 

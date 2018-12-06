@@ -32,5 +32,5 @@ export default async function loadImports({ imports }) {
     })
   );
 
-  return generators.map(generator => generator.exports);
+  return generators.map((generator: any) => generator.exports);
 }

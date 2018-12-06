@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import { load } from '../lib';
+import { load } from '..';
 
 describe('load', () => {
   it('should load project', async () => {
