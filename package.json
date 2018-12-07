@@ -1,6 +1,6 @@
 {
   "name": "@zappjs/project",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "dist",
   "devDependencies": {
     "@types/mocha": "^5.2.5",
