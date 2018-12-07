@@ -15,7 +15,7 @@
     "lodash": "^4.17.10"
   },
   "scripts": {
-    "build": "rm -rf ./dist ; tsc",
+    "build": "tsc",
     "test": "mocha -r ts-node/register ./src/**/*.spec.ts",
     "watch": "tsc -w"
   }
