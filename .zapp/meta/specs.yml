@@ -1,0 +1,35 @@
+/:
+  keys:
+    - app
+    - dev
+    - dependencies
+    - scripts
+/app:
+  keys:
+    - copyright
+    - description
+    - license
+    - name
+    - title
+    - version
+    - main
+/dependencies:
+  keys:
+    - glob
+    - js-yaml
+    - lodash
+/dev:
+  keys:
+    - dependencies
+/dev/dependencies:
+  keys:
+    - '@types/mocha'
+    - '@types/node'
+    - mocha
+    - ts-node
+    - typescript
+/scripts:
+  keys:
+    - build
+    - test
+    - watch

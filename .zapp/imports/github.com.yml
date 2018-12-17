@@ -1,0 +1,10 @@
+zappjs:
+  zapp-generator-license:
+    path: ~/Developer/zapp-generator-license
+    version: master
+  zapp-generator-readme:
+    path: ~/Developer/zapp-generator-readme
+    version: master
+  zapp-generator-npm:
+    path: ~/Developer/zapp-generator-npm
+    version: master

@@ -1,0 +1,3 @@
+build: tsc
+test: mocha -r ts-node/register ./src/**/*.spec.ts
+watch: tsc -w

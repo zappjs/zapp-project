@@ -1,3 +1,3 @@
-# ZappJS Project v0.1.0
+# ZappJS Project v0.1.3
 
 > zappjs project module

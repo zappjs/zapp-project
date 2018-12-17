@@ -1,6 +1,7 @@
+copyright: 2018 ZappJS
+description: zappjs project module
+license: apache-2.0
+main: dist
 name: '@zappjs/project'
 title: ZappJS Project
-version: 0.1.0
-description: zappjs project module
-copyright: 2018 ZappJS
-license: apache-2.0
+version: 0.1.3

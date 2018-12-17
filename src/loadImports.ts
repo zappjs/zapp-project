@@ -1,11 +1,8 @@
 import * as _ from 'lodash'
 import * as fs from 'fs';
-import * as path from 'path';
-import * as yaml from 'js-yaml';
 import { homedir } from 'os';
 
 import load from './load';
-import merge from './merge';
 
 export default async function loadImports({ imports }) {
   const generatorPaths = [];
@@ -32,5 +29,7 @@ export default async function loadImports({ imports }) {
     })
   );
 
-  return generators.map((generator: any) => generator.exports);
+  return generators
+    .filter((generator: any) => !!generator.exports)
+    .map((generator: any) => generator.exports);
 }
