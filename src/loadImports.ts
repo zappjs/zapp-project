@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import * as fs from 'fs';
+import { spawnSync } from 'child_process';
 import { homedir } from 'os';
 
 import load from './load';
@@ -13,15 +13,32 @@ export default async function loadImports({ imports }) {
       const repos = users[username];
       Object.keys(repos).forEach((repoName) => {
         const repo = repos[repoName];
-        const repoPath = repo.path || `${homedir()}/.zapp/generators/${domain}/${username}/${repoName}/${repo.version}`;
 
-        generatorPaths.push(repoPath);
+        if (repo.path) {
+          console.log(`Loading import at: ${repo.path}`);
+          generatorPaths.push(repo.path);
+          return;
+        }
+
+        if (repo.version) {
+          console.log(`Loading import with version: ${repo.version}`);
+          const version = repo.version || 'master';
+          const dest = `${homedir()}/.zapp/imports/${domain}/${username}/${repoName}/${version}`;
+          const cloneCmd = `git clone https://${domain}/${username}/${repoName}.git ${dest}`;
+          spawnSync(cloneCmd.split(' ')[0], cloneCmd.split(' ').slice(1));
+          const checkoutCmd = `git checkout ${version}`;
+          spawnSync(
+            checkoutCmd.split(' ')[0],
+            checkoutCmd.split(' ').slice(1),
+            {
+              cwd: dest
+            }
+          );
+          generatorPaths.push(dest);
+        }
       });
     });
   });
-
-  // console.log('Generator Paths:');
-  // console.log(generatorPaths);
 
   const generators = await Promise.all(
     generatorPaths.map((generatorPath) => {
